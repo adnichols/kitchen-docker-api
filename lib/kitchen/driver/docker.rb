@@ -22,6 +22,7 @@ module Kitchen
 
   module Driver
 
+    # Docker driver
     class Docker < Kitchen::Driver::SSHBase
 
       default_config :socket,        'unix:///var/run/docker.sock'
