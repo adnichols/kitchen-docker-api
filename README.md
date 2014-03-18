@@ -14,17 +14,7 @@ could choose to use the CLI or docker-api based client.
 
 ## Requirements
 
-* [Docker][docker_getting_started] versions < 0.9. 
-
-The version of docker-api in use by this gem currently does not support
-the 0.9 release of Docker. That version is supported in version 1.10.0
-of the docker-api gem however that gem is not backward comatible with
-older Docker versions. 
-
-There will be a subsequent update to this Gem to support Docker 0.9 and
-I will maintain two release branches until one version can support the
-majority of docker versions in the wild. This will be a major version
-increment. 
+* [Docker][docker_getting_started] 
 
 ## Known Issues
 
@@ -280,15 +270,17 @@ example:
 
 Created and maintained by [Aaron Nichols][author] (<anichols@trumped.org>)
 
+Original kitchen-docker by [Sean Porter](<portertech@gmail.com>)
+
 ## License
 
 Apache 2.0 (see [LICENSE][license])
 
 
-[author]:                 https://github.com/portertech
-[issues]:                 https://github.com/portertech/kitchen-docker/issues
-[license]:                https://github.com/portertech/kitchen-docker/blob/master/LICENSE
-[repo]:                   https://github.com/portertech/kitchen-docker
+[author]:                 https://github.com/adnichols
+[issues]:                 https://github.com/adnichols/kitchen-docker-api/issues
+[license]:                https://github.com/adnichols/kitchen-docker-api/blob/master/LICENSE
+[repo]:                   https://github.com/adnichols/kitchen-docker-api
 [docker_getting_started]: http://www.docker.io/gettingstarted/
 [docker_upstart_issue]:   https://github.com/dotcloud/docker/issues/223
 [docker_index]:           https://index.docker.io/
