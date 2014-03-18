@@ -279,16 +279,17 @@ example:
 ## Authors
 
 Created and maintained by [Aaron Nichols][author] (<anichols@trumped.org>)
+Original kitchen-docker by [Sean Porter][author] (<portertech@gmail.com>)
 
 ## License
 
 Apache 2.0 (see [LICENSE][license])
 
 
-[author]:                 https://github.com/portertech
-[issues]:                 https://github.com/portertech/kitchen-docker/issues
-[license]:                https://github.com/portertech/kitchen-docker/blob/master/LICENSE
-[repo]:                   https://github.com/portertech/kitchen-docker
+[author]:                 https://github.com/adnichols
+[issues]:                 https://github.com/adnichols/kitchen-docker-api/issues
+[license]:                https://github.com/adnichols/kitchen-docker-api/blob/master/LICENSE
+[repo]:                   https://github.com/adnichols/kitchen-docker-api
 [docker_getting_started]: http://www.docker.io/gettingstarted/
 [docker_upstart_issue]:   https://github.com/dotcloud/docker/issues/223
 [docker_index]:           https://index.docker.io/
