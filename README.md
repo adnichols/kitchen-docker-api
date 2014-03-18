@@ -279,6 +279,7 @@ example:
 ## Authors
 
 Created and maintained by [Aaron Nichols][author] (<anichols@trumped.org>)
+
 Original kitchen-docker by [Sean Porter][author] (<portertech@gmail.com>)
 
 ## License
