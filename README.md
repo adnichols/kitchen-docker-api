@@ -280,7 +280,7 @@ example:
 
 Created and maintained by [Aaron Nichols][author] (<anichols@trumped.org>)
 
-Original kitchen-docker by [Sean Porter][author] (<portertech@gmail.com>)
+Original kitchen-docker by [Sean Porter](<portertech@gmail.com>)
 
 ## License
 
