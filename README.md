@@ -14,17 +14,7 @@ could choose to use the CLI or docker-api based client.
 
 ## Requirements
 
-* [Docker][docker_getting_started] versions < 0.9. 
-
-The version of docker-api in use by this gem currently does not support
-the 0.9 release of Docker. That version is supported in version 1.10.0
-of the docker-api gem however that gem is not backward comatible with
-older Docker versions. 
-
-There will be a subsequent update to this Gem to support Docker 0.9 and
-I will maintain two release branches until one version can support the
-majority of docker versions in the wild. This will be a major version
-increment. 
+* [Docker][docker_getting_started] 
 
 ## Known Issues
 
