@@ -8,7 +8,7 @@ driver which uses the docker CLI you should look at the original
 which this fork originated. 
 
 Substantial credit for this driver goes to Sean Porter for the CLI
-implmentation & his support in developing the docker-api based version.
+implementation & his support in developing the docker-api based version.
 We ultimately decided it would be best to have two versions so folks
 could choose to use the CLI or docker-api based client. 
 
