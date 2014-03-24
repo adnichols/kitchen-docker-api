@@ -14,11 +14,7 @@ could choose to use the CLI or docker-api based client.
 
 ## Requirements
 
-* [Docker][docker_getting_started] 
-
-## Known Issues
-
-* Upstart is neutered due to [this issue][docker_upstart_issue].
+* [Docker][docker_getting_started] server. This driver does not require the docker cli to be installed. 
 
 ## Installation and Setup
 
