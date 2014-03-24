@@ -17,6 +17,7 @@
 require 'kitchen'
 require 'json'
 require 'docker'
+require 'socket'
 
 module Kitchen
 
@@ -27,7 +28,7 @@ module Kitchen
 
       default_config :socket,        'unix:///var/run/docker.sock'
       default_config :privileged,    false
-      default_config :remove_images, false
+      default_config :remove_images, true
       default_config :run_command,   '/usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no'
       default_config :username,      'kitchen'
       default_config :password,      'kitchen'
@@ -41,6 +42,12 @@ module Kitchen
         driver.default_platform
       end
 
+      default_config :container_name do |driver|
+        driver.default_container_name
+      end
+
+      default_config :disable_upstart, true
+
       def initialize(*args)
         super(*args)
         @docker_connection = ::Docker::Connection.new(config[:socket], :read_timeout => config[:read_timeout])
@@ -49,9 +56,17 @@ module Kitchen
         end
       end
 
+      def default_container_name
+        platform = instance.platform.name
+        suite = instance.suite.name
+        cookbook = instance.provisioner.instance_variable_get("@config")[:kitchen_root].split('/').last
+        hostname = Socket.gethostname.split('.').first
+        [platform,cookbook,suite,hostname].join('..')
+      end
+
       def default_image
         platform, release = instance.platform.name.split('-')
-        release ? [platform, release].join(':') : 'base'
+        release ? [platform, release].join(':') : platform
       end
 
       def default_platform
@@ -88,13 +103,16 @@ module Kitchen
         from = "FROM #{config[:image]}"
         platform = case config[:platform]
         when 'debian', 'ubuntu'
-          <<-eos
-            ENV DEBIAN_FRONTEND noninteractive
+          disable_upstart = <<-eos
             RUN dpkg-divert --local --rename --add /sbin/initctl
             RUN ln -sf /bin/true /sbin/initctl
+          eos
+          packages = <<-eos
+            ENV DEBIAN_FRONTEND noninteractive
             RUN apt-get update
             RUN apt-get install -y sudo openssh-server curl lsb-release
-          eos
+         eos
+         config[:disable_upstart] ? disable_upstart + packages : packages
         when 'rhel', 'centos'
           <<-eos
             RUN yum clean all
@@ -130,6 +148,8 @@ module Kitchen
           :Privileged => config[:privileged],
           :PublishAllPorts => false
         }
+        # Yes, this key must be a string
+        data['name'] = config[:container_name]
         data[:CpuShares] = config[:cpu] if config[:cpu]
         data[:Dns] = config[:dns] if config[:dns]
         data[:Hostname] = config[:hostname] if config[:hostname]
@@ -163,7 +183,6 @@ module Kitchen
       end
 
       def create_image(state, opts = {})
-        info("Fetching Docker base image '#{config[:image]}' and building...")
         opts[:rm] = config[:remove_images]
         image = ::Docker::Image.build(dockerfile, opts, @docker_connection) do |chunk|
           parse_log_chunk(chunk)

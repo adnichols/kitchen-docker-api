@@ -127,6 +127,31 @@ installed. There are several different behaviors available:
 
 The default value is `true`.
 
+### container\_name
+
+Allows for specification of a container name which will be visible in
+`docker ps`. This makes tracking down containers associated w/ cookbook
+testing easier. 
+
+This defaults to a calculated value which is a combination of 4 attributes:
+
+- platform name
+- CWD basename (where kitchen was run from)
+- suite name
+- hostname of initiating system
+
+For example, a cookbook named `test-gem` has this name when run from my
+laptop on a remote system:
+
+`ubuntu-12.04..test-gem..default..anichols-mbr`
+
+### disable\_upstart
+
+Disables upstart on Debian/Ubuntu containers, as many images do not
+support a working upstart.
+
+The default value is `true`.
+
 ### provision\_command
 
 Custom command(s) to be run when provisioning the base for the suite containers.
@@ -151,10 +176,10 @@ driver_config:
 
 ### remove\_images
 
-This determines if images are automatically removed when the suite container is
-destroyed.
+This determines if intermediate images are removed after container
+creation. Equivalent to `-rm` docker cli option.
 
-The default value is `false`.
+The default value is `true`.
 
 ### run_command
 
