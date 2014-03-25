@@ -1,3 +1,8 @@
+## 0.2.1
+
+* Discovered issue where client was trying to remove images after the
+  container was destroyed, triggering a docker error
+
 ## 0.2.0
 
 * Added support for container_name
