@@ -84,9 +84,6 @@ module Kitchen
 
       def destroy(state)
         destroy_container(state) if state[:container_id]
-        if config[:remove_images] && state[:image_id]
-          destroy_image(state)
-        end
       end
 
       protected
