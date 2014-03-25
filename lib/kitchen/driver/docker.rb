@@ -217,11 +217,6 @@ module Kitchen
         container.wait
         container.delete
       end
-
-      def destroy_image(state)
-        image = docker_image(state)
-        image.remove
-      end
     end
   end
 end
