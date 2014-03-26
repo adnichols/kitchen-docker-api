@@ -61,7 +61,8 @@ module Kitchen
         suite = instance.suite.name
         cookbook = instance.provisioner.instance_variable_get("@config")[:kitchen_root].split('/').last
         hostname = Socket.gethostname.split('.').first
-        [platform,cookbook,suite,hostname].join('..')
+        ts = Time.now().strftime("%s")
+        [platform,cookbook,suite,hostname,ts].join('..')
       end
 
       def default_image

@@ -1,3 +1,8 @@
+## 0.2.2
+
+* Added epoch seconds to name to create uniqueness across multiple runs.
+  Prevents a failing run from having a name collision.
+
 ## 0.2.1
 
 * Discovered issue where client was trying to remove images after the
