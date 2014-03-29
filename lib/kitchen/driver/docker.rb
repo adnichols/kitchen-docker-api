@@ -19,10 +19,9 @@ require 'json'
 require 'docker'
 require 'socket'
 
+
 module Kitchen
-
   module Driver
-
     # Docker driver
     class Docker < Kitchen::Driver::SSHBase
 
@@ -33,6 +32,7 @@ module Kitchen
       default_config :username,      'kitchen'
       default_config :password,      'kitchen'
       default_config :read_timeout,  300
+      default_config :dockerfile,    'internal'
 
       default_config :image do |driver|
         driver.default_image
@@ -98,6 +98,14 @@ module Kitchen
       end
 
       def dockerfile
+        if config[:dockerfile] == 'internal'
+          return internal_dockerfile
+        else
+          return fetch_dockerfile
+        end
+      end
+
+      def internal_dockerfile
         from = "FROM #{config[:image]}"
         platform = case config[:platform]
         when 'debian', 'ubuntu'
@@ -135,6 +143,13 @@ module Kitchen
           custom << "RUN #{cmd}\n"
         end
         [from, platform, base, custom].join("\n")
+      end
+
+      def fetch_dockerfile
+        require 'open-uri'
+        require 'erb'
+        erb = ERB.new(open(config[:dockerfile]) { |f| f.read })
+        erb.result(ERBContext.new(config).get_binding)
       end
 
       def container_config(state)
@@ -217,6 +232,18 @@ module Kitchen
         container.stop
         container.wait
         container.delete
+      end
+    end
+    # Erb class
+    class ERBContext
+      def initialize(config)
+        config.each_pair do |k, v|
+          instance_variable_set('@' + k.to_s, v)
+        end
+      end
+
+      def get_binding
+        binding
       end
     end
   end
