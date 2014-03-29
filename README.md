@@ -67,6 +67,23 @@ platforms:
 
 ## Configuration
 
+* [socket](#socket) - Configure the socket to connect to Docker daemon
+* [image](#image) - base image used for Docker container
+* [platform](#platform) - platform of Docker container
+* [require_chef_omnibus](#require_chef_omnibus) - Install Chef?
+* [container_name](#container_name) - Customize container name
+* [disable_upstart](#disable_upstart) - Disable upstart tweaks during container build
+* [dockerfile](#dockerfile) - Specify a custom Dockerfile 
+* [provision_command](#provision_command) - List of RUN commands during container build
+* [remove_images](#remove_images) - Remove intermediate images after image creation
+* [run_command](#run_command) - Command to run at container start
+* [memory](#memory) - Memory limits for container
+* [cpu](#cpu) - CPU limits for container
+* [volume](#volume) - Volumes to mount in container
+* [dns](#dns) - DNS servers to configure in container
+* [forward](#forward) - Ports to forward to running container
+* [privileged](#privileged) - Run container in privileged mode
+
 ### socket
 
 The Docker daemon socket to use. By default, Docker will listen on
@@ -147,6 +164,51 @@ Disables upstart on Debian/Ubuntu containers, as many images do not
 support a working upstart.
 
 The default value is `true`.
+
+### dockerfile
+
+This allows you to point to a specific dockerfile used to prepare an
+image for testing under test-kitchen. It is expected that this
+Dockerfile will do everything necessary to configure the image for use
+by kitchen-docker-api including:
+
+* Setup the username & password kitchen-docker-api expects to use
+* Provide the user with NOPASSWD sudo rights
+* Ensure ssh is installed and will work at container start
+* If using /sbin/init as `run_command` ensure ssh is started on start
+* Install any requisite packages
+* Specify a CMD, the driver will still use `config[:run_command]` at
+  container start but docker requires a CMD is specified
+
+If you specify a dockerfile path kitchen-docker-api will take no action
+to make sure your image is setup correctly, it will simply build an
+image using the specified dockerfile & run that image. 
+
+Note that the dockerfile is parsed as ERB and the `config` hash from
+`kitchen-docker-api` is passed into the template so any configuration in
+your yml may be referenced inside the Dockerfile. This allows you to
+place conditionals and other logic directly in your Dockerfile.
+
+This parameter supports 3 types of values:
+* File path (eg. `Dockerfile` or `/path/to/Dockerfile`)
+* Http URL (eg. `http://someurl.com/Dockerfile` )
+* `internal` will use the internal Dockerfile generator
+
+Default value: `internal`
+
+Example Dockerfile:
+```erb
+FROM tianon/centos:6.5
+RUN yum clean all
+RUN yum install -y sudo openssh-server openssh-clients curl
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
+RUN mkdir -p /var/run/sshd
+RUN useradd -d /home/<%= @username %> -m -s /bin/bash <%= @username %>
+RUN echo <%= "#{@username}:#{@password}" %> | chpasswd
+RUN echo '<%= @username %> ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+CMD [ "/usr/sbin/sshd", "-D", "-o", "UseDNS=no", "-o", "UsePAM=no" ]
+```
 
 ### provision\_command
 
