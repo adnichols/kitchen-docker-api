@@ -1,3 +1,8 @@
+## 0.3.0
+
+* Added support for the `dockerfile` config option
+* Added config TOC to README
+
 ## 0.2.2
 
 * Added epoch seconds to name to create uniqueness across multiple runs.
