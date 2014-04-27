@@ -94,7 +94,7 @@ module Kitchen
       end
 
       def remote_socket?
-        config[:socket] ? socket_uri.scheme == 'tcp' : false
+        config[:socket] ? %w{tcp http https}.include?(socket_uri.scheme) : false
       end
 
       def dockerfile
