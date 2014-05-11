@@ -1,3 +1,9 @@
+## 0.4.0
+
+* Bump docker-api to 0.10.x. This version is incompatible with docker <
+  0.9, so be sure you are running 0.9+ before using this version.
+* Default to enabling Tty option in docker
+
 ## 0.3.0
 
 * Added support for the `dockerfile` config option

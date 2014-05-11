@@ -16,6 +16,11 @@ could choose to use the CLI or docker-api based client.
 
 * [Docker][docker_getting_started] server. This driver does not require the docker cli to be installed. 
 
+NOTE: As of version 0.4.0 of this driver, you must be running Docker
+v0.9 or higher. This is due to a backward incompatible change in the
+docker-api gem this driver uses. If you must use an older Docker version
+you should run v0.3.0 or lower of this driver. 
+
 ## Installation and Setup
 
 Please read the Test Kitchen [docs][test_kitchen_docs] for more details.
