@@ -159,7 +159,8 @@ module Kitchen
           :AttachStdout => true,
           :AttachStderr => true,
           :Privileged => config[:privileged],
-          :PublishAllPorts => false
+          :PublishAllPorts => false,
+          :Tty => true
         }
         # Yes, this key must be a string
         data['name'] = config[:container_name]
