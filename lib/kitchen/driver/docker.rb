@@ -25,7 +25,7 @@ module Kitchen
     # Docker driver
     class Docker < Kitchen::Driver::SSHBase
 
-      default_config :socket,        'unix:///var/run/docker.sock'
+      default_config :socket,        ::Docker.url
       default_config :privileged,    false
       default_config :remove_images, true
       default_config :run_command,   '/usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no'
@@ -94,7 +94,7 @@ module Kitchen
       end
 
       def remote_socket?
-        config[:socket] ? socket_uri.scheme == 'tcp' : false
+        config[:socket] ? %w{tcp http https}.include?(socket_uri.scheme) : false
       end
 
       def dockerfile
